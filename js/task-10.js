@@ -9,27 +9,28 @@ const input = document.querySelector("input");
 const createBtn = document.querySelector("[data-create]");
 const destroyBtn = document.querySelector("[data-destroy]");
 const boxesDiv = document.getElementById("boxes");
-createBtn.addEventListener("click", () => {
-  const amount = Number(input.value);
-  createBoxes(amount);
-});
 
+createBtn.addEventListener("click", createBoxes);
 destroyBtn.addEventListener("click", destroyBoxes);
 
-function createBoxes(amount) {
-  const boxSize = 30;
-  let markup = "";
+function createBoxes() {
+  const amount = Number(input.value);
+  if (amount < 1 || amount > 100) {
+    alert("Please enter a number between 1 and 100");
+    return;
+  }
+  const boxes = [];
+  let boxSize = 30;
 
   for (let i = 0; i < amount; i += 1) {
-    const size = boxSize + i * 10;
-    const color = getRandomHexColor();
-    markup += `<div style="width: ${size}px;
-    height: ${size}px;
-    background-color: ${color};
-    margin-bottom: 10px;"></div>`;
+    const box = document.createElement("div");
+    box.style.width = boxSize + "px";
+    box.style.height = boxSize + "px";
+    box.style.backgroundColor = getRandomHexColor();
+    boxes.push(box);
+    boxSize += 10;
   }
-
-  boxesDiv.innerHTML = markup;
+  boxesDiv.append(...boxes);
 }
 
 function destroyBoxes() {
